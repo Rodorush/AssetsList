@@ -1,3 +1,4 @@
+import 'package:assets_list/asset_detail.dart';
 import 'package:flutter/material.dart';
 import 'model/asset.dart';
 import 'model/mock/asset_list.dart';
@@ -18,10 +19,7 @@ class _AssetListHomeState extends State<AssetListHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: _buildAssetList(),
@@ -49,20 +47,13 @@ class _AssetListHomeState extends State<AssetListHome> {
         style: _biggerFont,
       ),
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Center(
-              child: Text(
-                asset.name,
-                style: const TextStyle(fontSize: 20),
-              )),
-          duration: const Duration(milliseconds: 1000),
-          width: 180.0,
-          padding: const EdgeInsets.all(16.0),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                AssetDetail(asset: asset),
           ),
-        ));
+        );
       },
     );
   }
