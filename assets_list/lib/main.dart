@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'control/AssetHome.dart';
+import 'asset_list_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const AssetHome(title: 'Lista de Ativos'),
+      home: const AssetListHome(title: 'Lista de Ativos'),
     );
   }
 }
