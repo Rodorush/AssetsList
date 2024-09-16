@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'model/asset.dart';
+import '../model/asset.dart';
 
 class AssetDetail extends StatelessWidget {
   final Asset asset;

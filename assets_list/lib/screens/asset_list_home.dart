@@ -1,7 +1,7 @@
-import 'package:assets_list/asset_detail.dart';
+import 'package:assets_list/screens/asset_detail.dart';
 import 'package:flutter/material.dart';
-import 'model/asset.dart';
-import 'model/mock/asset_list.dart';
+import '../model/asset.dart';
+import '../model/mock/asset_list.dart';
 
 class AssetListHome extends StatefulWidget {
   const AssetListHome({super.key, required this.title});
