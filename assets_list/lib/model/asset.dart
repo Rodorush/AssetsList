@@ -23,7 +23,7 @@ class Asset {
     };
   }
 
-  factory Asset.fromMap(Map<String, dynamic> map) {
+ factory Asset.fromMap(Map<String, dynamic> map) {
     return Asset(
       id: map['id'] as int?,
       ticker: map['ticker'] as String,

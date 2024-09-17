@@ -3,16 +3,14 @@ import 'package:path/path.dart';
 import '../model/asset.dart';
 
 class DatabaseHelper {
-  //Atributo de classe privado que armazena a referência do objeto singleton
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
 
-  //Construtor que retorna a referência da instânca privada do banco
   factory DatabaseHelper() {
     return _instance;
   }
 
-  DatabaseHelper._internal(); //Construtor nomeado e privado
+  DatabaseHelper._internal();
 
   String table = "assets";
   String id = "id";
@@ -48,25 +46,19 @@ class DatabaseHelper {
     ''');
   }
 
-  // CRUD operations
   Future<List<Asset>> getAssets() async {
     final db = await database;
-    final assets = await db.query('assets');
-    return List.generate(assets.length, (i) {
-      return Asset(
-        id: assets[i]['id'] as int,
-        ticker: assets[i]['ticker'] as String,
-        name: assets[i]['name'] as String,
-        price: assets[i]['price'] as double,
-        lastPriceDate: assets[i]['lastPriceDate'] as DateTime,
-      );
-    });
+    final List<Map<String, dynamic>> assets = await db.query('assets');
+    return assets.map((asset) => Asset.fromMap(asset)).toList();
   }
 
   Future<void> insertAsset(Asset asset) async {
     final db = await database;
-    await db.insert('assets', asset.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      'assets',
+      asset.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<void> updateAsset(Asset asset) async {
