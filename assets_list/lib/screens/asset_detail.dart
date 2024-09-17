@@ -37,7 +37,7 @@ class _AssetDetailState extends State<AssetDetail> {
             ? 'Novo Ativo'
             : "${widget.asset!.ticker} - ${widget.asset!.name}"),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,14 +56,21 @@ class _AssetDetailState extends State<AssetDetail> {
                         labelText: "Código",
                         labelStyle: TextStyle(fontSize: 18),
                       ),
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: "Nome",
+                        labelStyle: TextStyle(fontSize: 18),
                       ),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 10),
                     const Divider(),
                     ListTile(
+                      contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.attach_money),
                       title: TextField(
                         controller: _priceController,
@@ -74,15 +81,23 @@ class _AssetDetailState extends State<AssetDetail> {
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
+                    const Divider(),
                     ListTile(
+                      contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.calendar_today),
-                      title: ListTile(
-                        title: Text(
-                          "Data do último preço: ${_selectedDate.toLocal()}",
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        trailing: const Icon(Icons.edit_calendar),
+                      title: GestureDetector(
                         onTap: _selectDate,
+                        child: InputDecorator(
+                          decoration: const InputDecoration(
+                            labelText: "Data do último preço",
+                            labelStyle: TextStyle(fontSize: 18),
+                            border: InputBorder.none,
+                          ),
+                          child: Text(
+                            _formatDate(_selectedDate),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -108,7 +123,6 @@ class _AssetDetailState extends State<AssetDetail> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 12),
-                    backgroundColor: Colors.redAccent,
                   ),
                 ),
               ],
@@ -117,6 +131,10 @@ class _AssetDetailState extends State<AssetDetail> {
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
   }
 
   Future<void> _selectDate() async {
@@ -140,7 +158,6 @@ class _AssetDetailState extends State<AssetDetail> {
 
     if (ticker.isNotEmpty && name.isNotEmpty && price > 0) {
       if (widget.asset == null) {
-        // Create a new asset
         final newAsset = Asset(
           ticker: ticker,
           name: name,
