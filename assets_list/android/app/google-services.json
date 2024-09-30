@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "488742726029",
+    "project_id": "assetslist-f77b0",
+    "storage_bucket": "assetslist-f77b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488742726029:android:f1fa70a9fe25f02580b5c4",
+        "android_client_info": {
+          "package_name": "br.com.rodorush.assets_list"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFHtKyWgulzWF6xhxfprw7JOU1uJKd5O8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
