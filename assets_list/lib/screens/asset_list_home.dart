@@ -1,8 +1,7 @@
-import 'package:assets_list/screens/asset_detail.dart';
-import 'package:assets_list/util/database_helper.dart';
 import 'package:flutter/material.dart';
-
 import '../model/asset.dart';
+import '../util/firestore_helper.dart';
+import 'asset_detail.dart';
 
 class AssetListHome extends StatefulWidget {
   const AssetListHome({super.key, required this.title});
@@ -14,21 +13,7 @@ class AssetListHome extends StatefulWidget {
 }
 
 class _AssetListHomeState extends State<AssetListHome> {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
-  List<Asset> _assetList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadAssets();
-  }
-
-  void _loadAssets() async {
-    final assets = await _dbHelper.getAssets();
-    setState(() {
-      _assetList = assets;
-    });
-  }
+  final FirestoreHelper _firestoreHelper = FirestoreHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -45,17 +30,27 @@ class _AssetListHomeState extends State<AssetListHome> {
           ),
         ],
       ),
-      body: _buildAssetList(),
-    );
-  }
+      body: StreamBuilder<List<Asset>>(
+        stream: _firestoreHelper.streamAssets(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("Nenhum ativo disponível"));
+          }
 
-  Widget _buildAssetList() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: _assetList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildCard(_assetList[index]);
-      },
+          final assets = snapshot.data!;
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: assets.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _buildCard(assets[index]);
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -123,7 +118,7 @@ class _AssetListHomeState extends State<AssetListHome> {
       ),
     );
     if (shouldReload == true) {
-      _loadAssets();
+      setState(() {}); // Firestore StreamBuilder já cuida do recarregamento
     }
   }
 }

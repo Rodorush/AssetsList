@@ -1,5 +1,5 @@
 class Asset {
-  final int? id;
+  final String? id; // Firestore usa id String
   final String ticker;
   final String name;
   final double price;
@@ -15,7 +15,6 @@ class Asset {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'ticker': ticker,
       'name': name,
       'price': price,
@@ -23,13 +22,14 @@ class Asset {
     };
   }
 
- factory Asset.fromMap(Map<String, dynamic> map) {
+  factory Asset.fromFirestore(doc) {
+    final data = doc.data()!;
     return Asset(
-      id: map['id'] as int?,
-      ticker: map['ticker'] as String,
-      name: map['name'] as String,
-      price: map['price'] as double,
-      lastPriceDate: DateTime.parse(map['lastPriceDate'] as String),
+      id: doc.id,
+      ticker: data['ticker'] as String,
+      name: data['name'] as String,
+      price: data['price'] as double,
+      lastPriceDate: DateTime.parse(data['lastPriceDate'] as String),
     );
   }
 }

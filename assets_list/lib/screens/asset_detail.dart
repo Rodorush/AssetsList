@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/asset.dart';
-import '../util/database_helper.dart';
+import '../util/firestore_helper.dart';
 
 class AssetDetail extends StatefulWidget {
   final Asset? asset;
@@ -15,7 +15,7 @@ class _AssetDetailState extends State<AssetDetail> {
   final _tickerController = TextEditingController();
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final FirestoreHelper _firestoreHelper = FirestoreHelper();
   DateTime _selectedDate = DateTime.now();
 
   @override
@@ -164,7 +164,7 @@ class _AssetDetailState extends State<AssetDetail> {
           price: price,
           lastPriceDate: _selectedDate,
         );
-        await _dbHelper.insertAsset(newAsset);
+        await _firestoreHelper.insertAsset(newAsset);
       } else {
         final updatedAsset = Asset(
           id: widget.asset!.id,
@@ -173,7 +173,7 @@ class _AssetDetailState extends State<AssetDetail> {
           price: price,
           lastPriceDate: _selectedDate,
         );
-        await _dbHelper.updateAsset(updatedAsset);
+        await _firestoreHelper.updateAsset(updatedAsset);
       }
       Navigator.pop(context, true);
     }
@@ -181,7 +181,7 @@ class _AssetDetailState extends State<AssetDetail> {
 
   void _deleteAsset() async {
     if (widget.asset != null) {
-      await _dbHelper.deleteAsset(widget.asset!.id!);
+      await _firestoreHelper.deleteAsset(widget.asset!.id!);
       Navigator.pop(context, true);
     }
   }
